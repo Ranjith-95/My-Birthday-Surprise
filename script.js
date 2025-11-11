@@ -1,30 +1,30 @@
 // ** STEP 1: DEFINE THE PERSONAL DETAILS HERE **
 // CHANGE THESE VALUES to personalize the surprise!
-const recipientName = "Sujithra"; 
-const birthdayDate = "November 25th"; 
-const birthdayAge = 16; // Example age, adjust as needed
+const recipientName = "Sujitha"; 
+const birthdayDate = "November 20th"; 
+const birthdayAge = 25; // Example age, adjust as needed
 // ---------------------------------------------
 
 const screens = ['screen-start', 'screen-cake', 'screen-balloons', 'screen-photos', 'screen-message', 'screen-final'];
-let currentScreenIndex = 0;
 let poppedBalloons = 0;
 let messageOpened = false; 
 
+// Variables for the new photo swiping feature
+let currentCardIndex = 0; 
+const totalCards = 3; 
+
 // --- Core Navigation Function (Called by all 'Next' and 'Start' buttons) ---
 function goToScreen(screenId) {
-    // 1. Hide all screens
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.remove('active');
         screen.classList.add('hidden');
     });
 
-    // 2. Show the target screen
     const targetScreen = document.getElementById(screenId);
     if (targetScreen) {
         targetScreen.classList.add('active');
         targetScreen.classList.remove('hidden');
         
-        // 3. Special action for the message card
         if (screenId === 'screen-message' && !messageOpened) {
             document.querySelector('.message-card').onclick = openMessage;
         }
@@ -33,10 +33,8 @@ function goToScreen(screenId) {
 
 // --- Screen 2: Cake Interactivity ---
 function decorateCake() {
-    // This alert acts as the visual "confetti" animation placeholder
     alert("✨ Confetti burst! The cake is decorated! ✨"); 
     
-    // Change buttons to progress the screen
     document.getElementById('btn-decorate').classList.add('hidden');
     document.getElementById('btn-light').classList.remove('hidden');
 }
@@ -44,7 +42,6 @@ function decorateCake() {
 function lightCandle() {
     alert("🔥 Candle is lit! Make a wish! 🕯️"); 
     
-    // Change buttons to progress the screen
     document.getElementById('btn-light').classList.add('hidden');
     document.getElementById('btn-next-cake').classList.remove('hidden');
 }
@@ -56,27 +53,59 @@ function popBalloon(balloon) {
     balloon.classList.add('balloon-popped');
     poppedBalloons++;
     
-    // Simple notification for the pop
     console.log("Balloon popped!");
 
     if (poppedBalloons === 4) {
-        // Show the hidden message pieces
         document.getElementById('balloon-message').classList.remove('hidden');
-        // Wait a second for the message to animate, then show 'Next'
         setTimeout(() => {
             document.getElementById('btn-next-balloons').classList.remove('hidden');
         }, 1000);
     }
 }
 
-// --- Screen 5: Message Interactivity (Called by tapping the card) ---
+// --- Screen 4: Photo Swiping Interactivity ---
+function swipeCard() {
+    const cards = document.querySelectorAll('.photo-card');
+
+    // Calculate the index of the card currently on top
+    const cardToMoveIndex = currentCardIndex % totalCards;
+    const cardToMove = cards[cardToMoveIndex];
+
+    // 1. Animate the card out (Mimics swiping away to the left)
+    cardToMove.style.transform = `translateX(-150%) rotate(-10deg)`;
+    cardToMove.style.opacity = 0;
+    
+    // 2. Move the card to the back of the stack after the animation finishes (500ms)
+    setTimeout(() => {
+        // Reset position for reuse
+        cardToMove.style.transition = 'none'; // Temporarily disable transition
+        
+        // This resets it to the initial stack position (slightly offset)
+        const initialRotate = (currentCardIndex % 2 === 0) ? 'rotate(2deg)' : 'rotate(-3deg)';
+        const initialY = (currentCardIndex % 3) * 5; // Slight Y offset
+
+        cardToMove.style.transform = `translateY(${initialY}px) ${initialRotate}`;
+        cardToMove.style.zIndex = currentCardIndex; // Send to back of z-order
+
+        // Re-enable transition for the next swipe
+        setTimeout(() => {
+            cardToMove.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+            cardToMove.style.opacity = 1; // Make it visible again
+        }, 50);
+
+    }, 500); 
+
+    // 3. Increment index for the next swipe
+    currentCardIndex++; 
+}
+
+// --- Screen 5: Message Interactivity ---
 function openMessage() {
     if (messageOpened) return;
     
     document.querySelector('.tap-to-open').classList.add('hidden');
     document.getElementById('final-message-text').classList.remove('hidden');
     messageOpened = true;
-    // Remove the click handler so it doesn't run again
     document.querySelector('.message-card').onclick = null; 
 }
 
@@ -85,7 +114,6 @@ function finalReveal() {
     document.querySelector('.gift-reveal').classList.add('hidden');
     document.getElementById('final-wish-text').classList.remove('hidden');
     alert("💖 FINAL SURPRISE REVEALED! Enjoy your special day! 💖");
-    // Optionally, enable a replay button here
 }
 
 // --- Initial Setup (Runs once when the page loads) ---
@@ -105,6 +133,3 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Start the application on the initial screen
     goToScreen(screens[0]); 
 });
-
-
-
