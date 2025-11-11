@@ -1,67 +1,50 @@
 // ** STEP 1: DEFINE THE PERSONAL DETAILS HERE **
-const recipientName = "Sujithra"; // Use the cute name from the video
-const birthdayDate = "November 25th"; 
-const birthdayAge = 16; // Example age, or remove if you don't want it.
+// CHANGE THESE VALUES to personalize the surprise!
+const recipientName = "Sujitha"; 
+const birthdayDate = "November 20th"; 
+const birthdayAge = 25; // Example age, adjust as needed
 // ---------------------------------------------
 
 const screens = ['screen-start', 'screen-cake', 'screen-balloons', 'screen-photos', 'screen-message', 'screen-final'];
 let currentScreenIndex = 0;
 let poppedBalloons = 0;
-let messageOpened = false; // Flag for the message card
+let messageOpened = false; 
 
-// --- Core Navigation Function ---
+// --- Core Navigation Function (Called by all 'Next' and 'Start' buttons) ---
 function goToScreen(screenId) {
-    // Hide all screens
+    // 1. Hide all screens
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.remove('active');
         screen.classList.add('hidden');
     });
 
-    // Show the target screen
+    // 2. Show the target screen
     const targetScreen = document.getElementById(screenId);
     if (targetScreen) {
         targetScreen.classList.add('active');
         targetScreen.classList.remove('hidden');
         
-        // Special actions on screen change
+        // 3. Special action for the message card
         if (screenId === 'screen-message' && !messageOpened) {
             document.querySelector('.message-card').onclick = openMessage;
         }
     }
 }
 
-// --- Screen 1: Personalization Setup ---
-document.addEventListener('DOMContentLoaded', () => {
-    // Set Personalized Greeting
-    const ageMessage = document.getElementById('age-message');
-    if (ageMessage) {
-        ageMessage.innerHTML = A Cutiepie was born today, <br>${birthdayAge} years ago!;
-    }
-    
-    // Set Final Message Text
-    const finalMessageText = document.getElementById('final-message-text');
-    if (finalMessageText) {
-        finalMessageText.textContent = Happy Birthday, ${recipientName}! You deserve all the happiness, love, and smiles in the world today and always. You have this special way of making everything around you brighter, your smile, your kindness, and the way you make people feel truly cared for. I hope your day is filled with laughter, surprises, and moments that make your heart happy.;
-    }
-
-    // Initialize to the start screen
-    goToScreen(screens[0]); 
-});
-
-
 // --- Screen 2: Cake Interactivity ---
 function decorateCake() {
-    // Mimic the confetti/decoration burst (requires external library for real confetti)
-    alert("✨ Confetti burst! Cake is decorated! ✨"); 
+    // This alert acts as the visual "confetti" animation placeholder
+    alert("✨ Confetti burst! The cake is decorated! ✨"); 
     
+    // Change buttons to progress the screen
     document.getElementById('btn-decorate').classList.add('hidden');
     document.getElementById('btn-light').classList.remove('hidden');
 }
 
 function lightCandle() {
-    // Mimic lighting the candle animation
-    alert("🔥 Candle is lit! Make a wish! 🕯"); 
+    alert("🔥 Candle is lit! Make a wish! 🕯️"); 
     
+    // Change buttons to progress the screen
     document.getElementById('btn-light').classList.add('hidden');
     document.getElementById('btn-next-cake').classList.remove('hidden');
 }
@@ -73,29 +56,52 @@ function popBalloon(balloon) {
     balloon.classList.add('balloon-popped');
     poppedBalloons++;
     
-    // Simple confetti effect (visual only)
-    alert("Pop!");
+    // Simple notification for the pop
+    console.log("Balloon popped!");
 
     if (poppedBalloons === 4) {
         // Show the hidden message pieces
         document.getElementById('balloon-message').classList.remove('hidden');
-        document.getElementById('btn-next-balloons').classList.remove('hidden');
+        // Wait a second for the message to animate, then show 'Next'
+        setTimeout(() => {
+            document.getElementById('btn-next-balloons').classList.remove('hidden');
+        }, 1000);
     }
 }
 
-// --- Screen 5: Message Interactivity ---
+// --- Screen 5: Message Interactivity (Called by tapping the card) ---
 function openMessage() {
     if (messageOpened) return;
     
     document.querySelector('.tap-to-open').classList.add('hidden');
     document.getElementById('final-message-text').classList.remove('hidden');
     messageOpened = true;
+    // Remove the click handler so it doesn't run again
+    document.querySelector('.message-card').onclick = null; 
 }
 
 // --- Screen 6: Final Reveal ---
 function finalReveal() {
     document.querySelector('.gift-reveal').classList.add('hidden');
     document.getElementById('final-wish-text').classList.remove('hidden');
-    // Final burst of confetti/animation here (requires external library)
-    alert("💖 FINAL SURPRISE REVEALED! 💖");
+    alert("💖 FINAL SURPRISE REVEALED! Enjoy your special day! 💖");
+    // Optionally, enable a replay button here
 }
+
+// --- Initial Setup (Runs once when the page loads) ---
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Set Personalized Greeting
+    const ageMessage = document.getElementById('age-message');
+    if (ageMessage) {
+        ageMessage.innerHTML = `A Cutiepie was born today, <br>${birthdayAge} years ago!`;
+    }
+    
+    // 2. Set Final Message Text
+    const finalMessageText = document.getElementById('final-message-text');
+    if (finalMessageText) {
+        finalMessageText.textContent = `Happy Birthday, ${recipientName}! You deserve all the happiness, love, and smiles in the world today and always. Your smile, kindness, and way of making people feel truly cared for make you special. I hope your day is filled with laughter, surprises, and moments that make your heart happy.`;
+    }
+
+    // 3. Start the application on the initial screen
+    goToScreen(screens[0]); 
+});
