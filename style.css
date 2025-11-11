@@ -90,6 +90,14 @@ body {
     margin-bottom: 10px;
 }
 
+/* Cake and Gift Image Sizing */
+#cake-image, .gift-reveal img {
+    max-width: 90%;
+    height: auto;
+    max-height: 40vh; /* Limit height on mobile */
+    margin: 10px auto;
+}
+
 /* --- Balloon Styles --- */
 .balloon-container {
     display: flex;
@@ -145,7 +153,7 @@ body {
     width: 250px;
     height: 350px;
     margin: 30px auto;
-    cursor: pointer; /* Indicate it's clickable */
+    cursor: pointer; 
 }
 .photo-card {
     position: absolute;
@@ -156,7 +164,7 @@ body {
     background-position: center;
     border: 3px solid white;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-    transition: transform 0.5s ease, opacity 0.5s ease; /* CRITICAL FOR SWIPING */
+    transition: transform 0.5s ease, opacity 0.5s ease;
     transform-origin: bottom center;
 }
 .photo-card:nth-child(1) { transform: rotate(2deg) translateY(0px); }
