@@ -2,7 +2,7 @@
 // CHANGE THESE VALUES to personalize the surprise!
 const recipientName = "Sujithra"; 
 const birthdayDate = "November 25th"; 
-const birthdayAge = 16; // Example age, adjust as needed
+const birthdayAge = 16; 
 // ---------------------------------------------
 
 const screens = ['screen-start', 'screen-cake', 'screen-balloons', 'screen-photos', 'screen-message', 'screen-final'];
@@ -13,7 +13,7 @@ let messageOpened = false;
 let currentCardIndex = 0; 
 const totalCards = 3; 
 
-// --- Core Navigation Function (Called by all 'Next' and 'Start' buttons) ---
+// --- Core Navigation Function ---
 function goToScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.remove('active');
@@ -33,6 +33,9 @@ function goToScreen(screenId) {
 
 // --- Screen 2: Cake Interactivity ---
 function decorateCake() {
+    // CRITICAL: Change image source to the decorated version
+    document.getElementById('cake-image').src = 'cake_decorated.png'; 
+    
     alert("✨ Confetti burst! The cake is decorated! ✨"); 
     
     document.getElementById('btn-decorate').classList.add('hidden');
@@ -40,6 +43,9 @@ function decorateCake() {
 }
 
 function lightCandle() {
+    // CRITICAL: Change image source to the version with the lit candle
+    document.getElementById('cake-image').src = 'cake_lit.png'; 
+    
     alert("🔥 Candle is lit! Make a wish! 🕯️"); 
     
     document.getElementById('btn-light').classList.add('hidden');
@@ -67,35 +73,32 @@ function popBalloon(balloon) {
 function swipeCard() {
     const cards = document.querySelectorAll('.photo-card');
 
-    // Calculate the index of the card currently on top
     const cardToMoveIndex = currentCardIndex % totalCards;
     const cardToMove = cards[cardToMoveIndex];
 
-    // 1. Animate the card out (Mimics swiping away to the left)
+    // 1. Animate the card out
     cardToMove.style.transform = `translateX(-150%) rotate(-10deg)`;
     cardToMove.style.opacity = 0;
     
     // 2. Move the card to the back of the stack after the animation finishes (500ms)
     setTimeout(() => {
-        // Reset position for reuse
-        cardToMove.style.transition = 'none'; // Temporarily disable transition
+        cardToMove.style.transition = 'none'; 
         
-        // This resets it to the initial stack position (slightly offset)
+        // Reset to initial stack position
         const initialRotate = (currentCardIndex % 2 === 0) ? 'rotate(2deg)' : 'rotate(-3deg)';
-        const initialY = (currentCardIndex % 3) * 5; // Slight Y offset
+        const initialY = (currentCardIndex % 3) * 5; 
 
         cardToMove.style.transform = `translateY(${initialY}px) ${initialRotate}`;
-        cardToMove.style.zIndex = currentCardIndex; // Send to back of z-order
+        cardToMove.style.zIndex = currentCardIndex; 
 
-        // Re-enable transition for the next swipe
+        // Re-enable transition
         setTimeout(() => {
             cardToMove.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
-            cardToMove.style.opacity = 1; // Make it visible again
+            cardToMove.style.opacity = 1; 
         }, 50);
 
     }, 500); 
 
-    // 3. Increment index for the next swipe
     currentCardIndex++; 
 }
 
@@ -130,7 +133,12 @@ document.addEventListener('DOMContentLoaded', () => {
         finalMessageText.textContent = `Happy Birthday, ${recipientName}! You deserve all the happiness, love, and smiles in the world today and always. Your smile, kindness, and way of making people feel truly cared for make you special. I hope your day is filled with laughter, surprises, and moments that make your heart happy.`;
     }
 
-    // 3. Start the application on the initial screen
+    // 3. Set the initial cake image source
+    const cakeImage = document.getElementById('cake-image');
+    if (cakeImage) {
+        cakeImage.src = 'cake_undecorated.png'; 
+    }
+
+    // 4. Start the application on the initial screen
     goToScreen(screens[0]); 
 });
-
