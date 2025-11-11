@@ -27,7 +27,8 @@
         <section id="screen-cake" class="screen hidden">
             <div class="content-box">
                 <div class="cake-model">
-                                    </div>
+                    <img src="cake_image.png" alt="Birthday Cake">
+                </div>
 
                 <button id="btn-decorate" class="neon-button" onclick="decorateCake()">
                     <i class="fas fa-magic"></i> Decorate
@@ -67,9 +68,9 @@
         <section id="screen-photos" class="screen hidden">
             <div class="content-box">
                 <h2 class="neon-text">Some Sweet Moments</h2>
-                <p>Swipe the cards</p>
+                <p>Tap the cards</p>
                 
-                <div class="photo-carousel">
+                <div class="photo-carousel" onclick="swipeCard()">
                     <div class="photo-card" style="background-image: url('photo1.jpg'); z-index: 3;"></div>
                     <div class="photo-card" style="background-image: url('photo2.jpg'); z-index: 2;"></div>
                     <div class="photo-card" style="background-image: url('photo3.jpg'); z-index: 1;"></div>
@@ -99,9 +100,10 @@
              <div class="content-box">
                 <h2 class="neon-text">One Last Thing...</h2>
                 <div class="gift-reveal" onclick="finalReveal()">
-                                        <p>Tap the gift</p>
+                    <img src="gift_box.png" alt="Gift Box">
+                    <p>Tap the gift</p>
                 </div>
-                <p id="final-wish-text" class="final-love hidden">Lots of love for you! Once again, Happy Birthday! ❤</p>
+                <p id="final-wish-text" class="final-love hidden">Lots of love for you! Once again, Happy Birthday! ❤️</p>
              </div>
         </section>
 
@@ -109,4 +111,5 @@
 
     <script src="script.js"></script>
 </body>
-</html>
+    </html>
+    
