@@ -6,7 +6,7 @@
 
 body {
     background-color: var(--dark-bg);
-    color: #fce4ec; /* Very light pink text */
+    color: #fce4ec; 
     font-family: 'system-ui', sans-serif;
     text-align: center;
     margin: 0;
@@ -15,14 +15,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Hide scrollbars */
+    overflow: hidden; 
     background-image: radial-gradient(circle at center, rgba(var(--neon-purple), 0.2) 0%, rgba(18, 1, 31, 1) 70%);
 }
 
 .app-container {
     width: 100%;
-    max-width: 400px; /* Mobile width focus */
-    height: 100vh; /* Full mobile screen height */
+    max-width: 400px; 
+    height: 100vh; 
     position: relative;
 }
 
@@ -107,7 +107,7 @@ body {
     box-shadow: 0 0 10px var(--color);
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
-.balloon::before { /* String */
+.balloon::before { 
     content: '';
     position: absolute;
     top: 100%;
@@ -139,12 +139,13 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- Photo Card Stack Styles (Mimics 0:19) --- */
+/* --- Photo Card Stack Styles --- */
 .photo-carousel {
     position: relative;
     width: 250px;
     height: 350px;
     margin: 30px auto;
+    cursor: pointer; /* Indicate it's clickable */
 }
 .photo-card {
     position: absolute;
@@ -155,8 +156,7 @@ body {
     background-position: center;
     border: 3px solid white;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-    transition: transform 0.5s ease;
-    /* Initial Stack effect */
+    transition: transform 0.5s ease, opacity 0.5s ease; /* CRITICAL FOR SWIPING */
     transform-origin: bottom center;
 }
 .photo-card:nth-child(1) { transform: rotate(2deg) translateY(0px); }
@@ -184,5 +184,5 @@ body {
 }
 .final-text {
     text-align: left;
-    white-space: pre-wrap; /* Preserves formatting */
-}
+    white-space: pre-wrap; 
+    }
