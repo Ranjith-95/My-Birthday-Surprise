@@ -1,7 +1,7 @@
 // ** STEP 1: DEFINE THE PERSONAL DETAILS HERE **
 // CHANGE THESE VALUES to personalize the surprise!
 const recipientName = "Sujithra"; 
-const birthdayDate = "November 20th"; 
+const birthdayDate = "November 25th"; 
 const birthdayAge = 16; // Example age, adjust as needed
 // ---------------------------------------------
 
@@ -105,5 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Start the application on the initial screen
     goToScreen(screens[0]); 
 });
+
 
 
