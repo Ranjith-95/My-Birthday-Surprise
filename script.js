@@ -55,14 +55,34 @@ function showScreen(name) {
   }
 }
 
-// start music (called only when user clicks start)
+// ---------- FIXED AUDIO FUNCTION ----------
 function startMusic() {
-  // try resume (some browsers need user gesture)
-  if (bgMusic) {
-    const playPromise = bgMusic.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => { /* ignore autoplay block */ });
-    }
+  if (!bgMusic) return;
+
+  // Ensure file is ready
+  bgMusic.load();
+  bgMusic.volume = 1;
+
+  // Try playing immediately
+  const playPromise = bgMusic.play();
+
+  if (playPromise !== undefined) {
+    playPromise
+      .then(() => {
+        console.log("🎶 Music started successfully");
+      })
+      .catch((err) => {
+        console.warn("Autoplay blocked — waiting for user interaction...", err);
+
+        // If blocked, wait for next user click anywhere
+        document.body.addEventListener(
+          "click",
+          () => {
+            bgMusic.play();
+          },
+          { once: true }
+        );
+      });
   }
 }
 
@@ -99,12 +119,9 @@ balloons.forEach((btn, idx) => {
     btn.classList.add('popped');
     // show corresponding word
     const w = wordEls[idx];
-    if (w) {
-      // add show class to animate opacity/translate
-      w.classList.add('show');
-    }
+    if (w) w.classList.add('show');
+
     poppedCount++;
-    // when all popped, show next button
     if (poppedCount >= 4) {
       setTimeout(() => btnNextBalloons.classList.remove('hidden'), 500);
     }
@@ -114,7 +131,7 @@ balloons.forEach((btn, idx) => {
 // next from balloons to photos
 btnNextBalloons.addEventListener('click', () => showScreen('photos'));
 
-// PHOTO CAROUSEL: simple cycle - click moves top card to bottom
+// PHOTO CAROUSEL: click to cycle top card
 document.getElementById('photo-carousel').addEventListener('click', () => {
   if (photoCards.length === 0) return;
   const top = photoCards.shift(); // remove first element
@@ -122,13 +139,12 @@ document.getElementById('photo-carousel').addEventListener('click', () => {
   top.style.transition = 'transform .5s ease, opacity .5s ease';
   top.style.transform = 'translateX(-150%) rotate(-10deg)';
   top.style.opacity = '0';
-  // after animation, reset and put at end
+  // after animation, reset and push back
   setTimeout(() => {
     top.style.transition = 'none';
-    top.style.transform = ''; // will use CSS nth-child stacked look after reflow
+    top.style.transform = '';
     top.style.opacity = '1';
     photoCards.push(top);
-    // re-append all cards in order to update stacking order
     const container = document.getElementById('photo-carousel');
     photoCards.forEach((card, i) => {
       card.style.zIndex = String(photoCards.length - i);
@@ -161,6 +177,7 @@ giftReveal.addEventListener('click', () => {
 btnFinally.addEventListener('click', () => {
   giftImageContainer.classList.add('hidden');
   finalWish.classList.remove('hidden');
+
   // optional: fade out music smoothly
   if (bgMusic) {
     let vol = bgMusic.volume;
@@ -179,21 +196,20 @@ btnFinally.addEventListener('click', () => {
 
 // ---------- INIT ----------
 document.addEventListener('DOMContentLoaded', () => {
-  // set welcome text
   const ageMsg = document.getElementById('age-message');
   if (ageMsg) ageMsg.innerHTML = `A Cutiepie was born today, <br>${birthdayAge} years ago!`;
 
-  // hide words initially (they are visible in DOM but not shown)
+  // hide words initially
   wordEls.forEach(w => w.classList.remove('show'));
 
-  // set initial photo z-index stack
+  // set initial photo stack
   const container = document.getElementById('photo-carousel');
   photoCards.forEach((card, i) => {
     card.style.zIndex = String(photoCards.length - i);
     container.appendChild(card);
   });
 
-  // ensure final message hidden
+  // hide message text & final wish
   finalMessageText.classList.add('hidden');
   finalWish.classList.add('hidden');
 });
