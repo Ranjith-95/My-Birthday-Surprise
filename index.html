@@ -1,110 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Happy Birthday!</title>
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="" crossorigin="anonymous" />
+
 </head>
 <body>
-
-  <!-- Background Music -->
-  <audio id="bg-music" src="music1.mp3" autoplay loop></audio>
+  <!-- background audio - NO autoplay -->
+  <audio id="bg-music" src="music1.mp3" loop></audio>
 
   <div class="app-container">
-    
-    <!-- Screen 1 -->
-    <section id="screen-start" class="screen active">
-      <div class="content-box">
-        <span class="cute-icon">🐼</span>
-        <h2 id="age-message" class="neon-text">A Cutiepie was born today!</h2>
-        <p>Yes, it's YOU Sujithra!, A little surprise awaits...</p>
-        <button class="neon-button" onclick="goToScreen('screen-cake')">Start the surprise 🎁</button>
-      </div>
-    </section>
+    <div class="content-box">
 
-    <!-- Screen 2 -->
-    <section id="screen-cake" class="screen hidden">
-      <div class="content-box">
-        <img id="cake-image" src="cake_undecorated.png" alt="Cake">
-        <button id="btn-decorate" class="neon-button" onclick="decorateCake()">🎨 Decorate</button>
-        <button id="btn-light" class="neon-button hidden" onclick="lightCandle()">🕯️ Light Candle</button>
-        <button id="btn-next-cake" class="neon-button hidden" onclick="goToScreen('screen-balloons')">Next ➡️</button>
-      </div>
-    </section>
-
-    <!-- Screen 3 -->
-    <section id="screen-balloons" class="screen hidden">
-      <div class="content-box">
-        <h2 class="neon-text">Pop the Balloons 🎈</h2>
-        <div class="balloon-container">
-          <div class="balloon" style="--color:#e91e63;" onclick="popBalloon(this)"></div>
-          <div class="balloon" style="--color:#ffc107;" onclick="popBalloon(this)"></div>
-          <div class="balloon" style="--color:#4caf50;" onclick="popBalloon(this)"></div>
-          <div class="balloon" style="--color:#03a9f4;" onclick="popBalloon(this)"></div>
+      <!-- START SCREEN -->
+      <section id="screen-start" class="screen active">
+        <div class="center">
+          <div class="cute-icon">🐼</div>
+          <h1 id="age-message" class="neon-text">A Cutiepie was born today!</h1>
+          <p class="subtitle">Yes, it's YOU! A little surprise awaits...</p>
+          <div class="controls">
+            <button id="btn-start" class="neon-button"><i class="fas fa-gift"></i> Start the surprise</button>
+          </div>
         </div>
-        <div id="balloon-message">
-          <span id="word1" class="msg-piece hidden">You</span>
-          <span id="word2" class="msg-piece hidden">are</span>
-          <span id="word3" class="msg-piece hidden">a</span>
-          <span id="word4" class="msg-piece hidden">Cutie!</span>
+      </section>
+
+      <!-- CAKE SCREEN -->
+      <section id="screen-cake" class="screen hidden">
+        <div class="center vertical">
+          <img id="cake-image" src="cake_undecorated.png" alt="Cake" class="responsive-img">
+          <div class="controls">
+            <button id="btn-decorate" class="neon-button">🎨 Decorate</button>
+            <button id="btn-light" class="neon-button hidden">🕯️ Light Candle</button>
+            <button id="btn-next-cake" class="neon-button hidden">Next ➡️</button>
+          </div>
         </div>
-        <button id="btn-next-balloons" class="neon-button hidden" onclick="goToScreen('screen-photos')">Next ➡️</button>
-      </div>
-    </section>
+      </section>
 
-    <!-- Screen 4 -->
-    <section id="screen-photos" class="screen hidden">
-      <div class="content-box">
-        <h2 class="neon-text">Some Sweet Moments 📸</h2>
-        <p>Tap the cards</p>
-        <div class="photo-carousel" onclick="swipeCard()">
-          <div class="photo-card" style="background-image:url('photo1.jpg');z-index:5;"></div>
-          <div class="photo-card" style="background-image:url('photo2.jpg');z-index:4;"></div>
-          <div class="photo-card" style="background-image:url('photo3.jpg');z-index:3;"></div>
-          <div class="photo-card" style="background-image:url('photo4.jpg');z-index:2;"></div>
-          <div class="photo-card" style="background-image:url('photo5.jpg');z-index:1;"></div>
+      <!-- BALLOONS SCREEN -->
+      <section id="screen-balloons" class="screen hidden">
+        <div class="center vertical">
+          <h2 class="neon-text">Pop the Balloons 🎈</h2>
+          <div class="balloon-container" aria-hidden="false">
+            <button class="balloon" data-index="1" style="--color:#e91e63;"></button>
+            <button class="balloon" data-index="2" style="--color:#ffc107;"></button>
+            <button class="balloon" data-index="3" style="--color:#4caf50;"></button>
+            <button class="balloon" data-index="4" style="--color:#03a9f4;"></button>
+          </div>
+
+          <div id="balloon-message" class="message-row">
+            <span id="word1" class="msg-piece">You</span>
+            <span id="word2" class="msg-piece">are</span>
+            <span id="word3" class="msg-piece">a</span>
+            <span id="word4" class="msg-piece">Cutie!</span>
+          </div>
+
+          <div class="controls">
+            <button id="btn-next-balloons" class="neon-button hidden">Next ➡️</button>
+          </div>
         </div>
-        <button class="neon-button" onclick="goToScreen('screen-message')">Open My Message 💌</button>
-      </div>
-    </section>
+      </section>
 
-    <!-- Screen 5 -->
-    <section id="screen-message" class="screen hidden">
-      <div class="content-box">
-        <h2 class="neon-text">A Special Message 💖</h2>
-        <div class="message-card" onclick="openMessage()">
-          <p class="tap-to-open">Tap to Open</p>
-          <div id="final-message-text" class="final-text hidden"></div>
+      <!-- PHOTOS SCREEN -->
+      <section id="screen-photos" class="screen hidden">
+        <div class="center vertical">
+          <h2 class="neon-text">Some Sweet Moments 📸</h2>
+          <p class="small">Tap the cards</p>
+
+          <div id="photo-carousel" class="photo-carousel" tabindex="0" aria-label="Photo carousel">
+            <!-- photo-card elements added directly in HTML to preserve order -->
+            <div class="photo-card" style="background-image:url('photo1.jpg');"></div>
+            <div class="photo-card" style="background-image:url('photo2.jpg');"></div>
+            <div class="photo-card" style="background-image:url('photo3.jpg');"></div>
+            <div class="photo-card" style="background-image:url('photo4.jpg');"></div>
+            <div class="photo-card" style="background-image:url('photo5.jpg');"></div>
+          </div>
+
+          <div class="controls">
+            <button id="btn-to-message" class="neon-button">Open My Message 💌</button>
+          </div>
         </div>
-        <button class="neon-button" onclick="goToScreen('screen-final')">Next ➡️</button>
-      </div>
-    </section>
+      </section>
 
-    <!-- Screen 6 -->
-    <section id="screen-final" class="screen hidden">
-      <div class="content-box">
-        <h2 class="neon-text">One Last Thing 🎁</h2>
-        <div class="gift-reveal" onclick="finalReveal()">
-          <img src="gift_box.png" alt="Gift Box">
-          <p>Tap the gift</p>
+      <!-- MESSAGE SCREEN -->
+      <section id="screen-message" class="screen hidden">
+        <div class="center vertical">
+          <h2 class="neon-text">A Special Message 💖</h2>
+
+          <div id="message-card" class="message-card">
+            <p id="tap-open" class="tap-to-open">Tap to Open</p>
+            <div id="final-message-text" class="final-text hidden"></div>
+          </div>
+
+          <div class="controls">
+            <button id="btn-to-final" class="neon-button">Next ➡️</button>
+          </div>
         </div>
+      </section>
 
-        <div id="gift-image-container" class="hidden">
-          <img src="surprise_photo.jpg" alt="Surprise Image" class="surprise-image">
-          <button class="neon-button" id="btn-finally" onclick="showFinalMessage()">Finally ❤️</button>
+      <!-- FINAL SCREEN -->
+      <section id="screen-final" class="screen hidden">
+        <div class="center vertical">
+          <h2 class="neon-text">One Last Thing 🎁</h2>
+
+          <div id="gift-reveal" class="gift-reveal">
+            <img src="gift_box.png" alt="Gift Box" class="gift-img">
+            <p class="small">Tap the gift</p>
+          </div>
+
+          <div id="gift-image-container" class="gift-popup hidden">
+            <img id="popup-image" src="surprise_photo.jpg" alt="Surprise" class="surprise-image">
+            <div class="controls">
+              <button id="btn-finally" class="neon-button">Finally ❤️</button>
+            </div>
+          </div>
+
+          <p id="final-wish-text" class="final-love hidden">Lots of love for you! Once again, Happy Birthday! ❤️</p>
         </div>
+      </section>
 
-        <p id="final-wish-text" class="final-love hidden">Lots of love for you! Once again, Happy Birthday! ❤️</p>
-      </div>
-    </section>
+    </div> <!-- content-box -->
+  </div> <!-- app-container -->
 
-  </div>
-
+  <!-- JS -->
   <script src="script.js"></script>
 </body>
 </html>
+
+
 
 
 
