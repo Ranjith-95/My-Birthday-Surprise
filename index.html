@@ -9,15 +9,16 @@
 </head>
 <body>
 
+    <!-- Background Music -->
+    <audio id="bg-music" src="music1.mp3" autoplay loop></audio>
+
     <div class="app-container">
         
         <section id="screen-start" class="screen active">
             <div class="content-box">
                 <span class="cute-icon">🐼</span> 
-                
                 <h2 id="age-message" class="neon-text">A Cutiepie was born today!</h2>
                 <p>Yes, it's YOU! A little surprise awaits...</p>
-
                 <button class="neon-button" onclick="goToScreen('screen-cake')">
                     Start the surprise <i class="fas fa-gift"></i>
                 </button>
@@ -46,19 +47,17 @@
             <div class="content-box">
                 <h2 class="neon-text">Pop all 4 balloons</h2>
                 <div class="balloon-container">
-                    <div class="balloon" data-pop="0" style="--color: #e91e63;" onclick="popBalloon(this)"></div>
-                    <div class="balloon" data-pop="0" style="--color: #ffc107;" onclick="popBalloon(this)"></div>
-                    <div class="balloon" data-pop="0" style="--color: #4caf50;" onclick="popBalloon(this)"></div>
-                    <div class="balloon" data-pop="0" style="--color: #03a9f4;" onclick="popBalloon(this)"></div>
+                    <div class="balloon" style="--color: #e91e63;" onclick="popBalloon(this)"></div>
+                    <div class="balloon" style="--color: #ffc107;" onclick="popBalloon(this)"></div>
+                    <div class="balloon" style="--color: #4caf50;" onclick="popBalloon(this)"></div>
+                    <div class="balloon" style="--color: #03a9f4;" onclick="popBalloon(this)"></div>
                 </div>
-                
                 <div id="balloon-message" class="hidden">
                     <span class="msg-piece" style="--delay: 0.1s;">You</span>
                     <span class="msg-piece" style="--delay: 0.3s;">are</span>
                     <span class="msg-piece" style="--delay: 0.5s;">a</span>
                     <span class="msg-piece" style="--delay: 0.7s;">Cutie!</span>
                 </div>
-                
                 <button id="btn-next-balloons" class="neon-button hidden" onclick="goToScreen('screen-photos')">
                     Next <i class="fas fa-arrow-right"></i>
                 </button>
@@ -71,9 +70,11 @@
                 <p>Tap the cards</p>
                 
                 <div class="photo-carousel" onclick="swipeCard()">
-                    <div class="photo-card" style="background-image: url('photo1.jpg'); z-index: 3;"></div>
-                    <div class="photo-card" style="background-image: url('photo2.jpg'); z-index: 2;"></div>
-                    <div class="photo-card" style="background-image: url('photo3.jpg'); z-index: 1;"></div>
+                    <div class="photo-card" style="background-image: url('photo1.jpg'); z-index: 5;"></div>
+                    <div class="photo-card" style="background-image: url('photo2.jpg'); z-index: 4;"></div>
+                    <div class="photo-card" style="background-image: url('photo3.jpg'); z-index: 3;"></div>
+                    <div class="photo-card" style="background-image: url('photo4.jpg'); z-index: 2;"></div>
+                    <div class="photo-card" style="background-image: url('photo5.jpg'); z-index: 1;"></div>
                 </div>
 
                 <button class="neon-button" onclick="goToScreen('screen-message')">
@@ -85,10 +86,9 @@
         <section id="screen-message" class="screen hidden">
             <div class="content-box">
                 <h2 class="neon-text">A Special Message</h2>
-                <div class="message-card">
+                <div class="message-card" onclick="openMessage()">
                     <p class="tap-to-open">Tap to Open</p>
-                    <div id="final-message-text" class="final-text hidden">
-                        </div>
+                    <div id="final-message-text" class="final-text hidden"></div>
                 </div>
                 <button class="neon-button" onclick="goToScreen('screen-final')">
                     Next <i class="fas fa-arrow-right"></i>
@@ -97,12 +97,19 @@
         </section>
         
         <section id="screen-final" class="screen hidden">
-             <div class="content-box">
+            <div class="content-box">
                 <h2 class="neon-text">One Last Thing...</h2>
                 <div class="gift-reveal" onclick="finalReveal()">
                     <img src="gift_box.png" alt="Gift Box">
                     <p>Tap the gift</p>
                 </div>
+
+                <!-- Hidden surprise image and buttons -->
+                <div id="gift-image-container" class="hidden">
+                    <img src="surprise_photo.jpg" alt="Surprise Image" class="surprise-image">
+                    <button class="neon-button" id="btn-finally" onclick="showFinalMessage()">Finally ❤️</button>
+                </div>
+
                 <p id="final-wish-text" class="final-love hidden">Lots of love for you! Once again, Happy Birthday! ❤️</p>
              </div>
         </section>
@@ -112,3 +119,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
