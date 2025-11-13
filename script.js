@@ -161,7 +161,7 @@ messageCard.addEventListener('click', () => {
   if (!finalMessageText.classList.contains('hidden')) return;
   tapOpen.classList.add('hidden');
   finalMessageText.classList.remove('hidden');
-  finalMessageText.textContent = `Happy Birthday, ${recipientName}! 🎉\n\nYou deserve all the happiness, love, and smiles in the world. Enjoy your special day! ❤️`;
+  finalMessageText.textContent = `Happy Birthday, ${recipientName}! 🎉\n\nYou deserve all the happiness, love, and smiles in the world. Enjoy your special day! ❤️ There is few things to tell you, life la evlo mudiyumo avlo achieve pannu onakku oru support ah na eppayume iruppan.  Indha achievements la encourage panna ippo Amma namma kooda illaye nu nenaikkadha, life long na onakku oru amma va, appa va, friend ah, anna na koodave iruppan...`;
 });
 
 // next to final
@@ -213,6 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
   finalMessageText.classList.add('hidden');
   finalWish.classList.add('hidden');
 });
+
 
 
 
