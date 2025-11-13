@@ -1,114 +1,215 @@
-const recipientName = "Sujithra"; 
-const birthdayDate = "November 25th"; 
+// ---------- CONFIG ----------
+const recipientName = "Sujithra";
 const birthdayAge = 16;
 
-const screens = ['screen-start', 'screen-cake', 'screen-balloons', 'screen-photos', 'screen-message', 'screen-final'];
-let poppedBalloons = 0;
-let messageOpened = false; 
-let currentCardIndex = 0; 
+// get references
+const screens = {
+  start: document.getElementById('screen-start'),
+  cake: document.getElementById('screen-cake'),
+  balloons: document.getElementById('screen-balloons'),
+  photos: document.getElementById('screen-photos'),
+  message: document.getElementById('screen-message'),
+  final: document.getElementById('screen-final')
+};
 
-function goToScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
-        screen.classList.add('hidden');
-    });
+const bgMusic = document.getElementById('bg-music');
+const btnStart = document.getElementById('btn-start');
+const btnDecorate = document.getElementById('btn-decorate');
+const btnLight = document.getElementById('btn-light');
+const btnNextCake = document.getElementById('btn-next-cake');
+const balloons = Array.from(document.querySelectorAll('.balloon'));
+const wordEls = [
+  document.getElementById('word1'),
+  document.getElementById('word2'),
+  document.getElementById('word3'),
+  document.getElementById('word4')
+];
+const btnNextBalloons = document.getElementById('btn-next-balloons');
 
-    const targetScreen = document.getElementById(screenId);
-    if (targetScreen) {
-        targetScreen.classList.add('active');
-        targetScreen.classList.remove('hidden');
-    }
+const photoCards = Array.from(document.querySelectorAll('.photo-card'));
+const btnToMessage = document.getElementById('btn-to-message');
+const messageCard = document.getElementById('message-card');
+const tapOpen = document.getElementById('tap-open');
+const finalMessageText = document.getElementById('final-message-text');
+const btnToFinal = document.getElementById('btn-to-final');
+
+const giftReveal = document.getElementById('gift-reveal');
+const giftImageContainer = document.getElementById('gift-image-container');
+const btnFinally = document.getElementById('btn-finally');
+const finalWish = document.getElementById('final-wish-text');
+
+// state
+let poppedCount = 0;
+let currentIndex = 0; // for photo carousel
+
+// ---------- HELPERS ----------
+function showScreen(name) {
+  // hide all then show requested
+  Object.values(screens).forEach(s => {
+    s.classList.add('hidden');
+    s.classList.remove('active');
+  });
+  if (screens[name]) {
+    screens[name].classList.remove('hidden');
+    screens[name].classList.add('active');
+  }
 }
 
-function decorateCake() {
-    document.getElementById('cake-image').src = 'cake_decorated.png'; 
-    alert("✨ Confetti burst! The cake is decorated! ✨");
-    document.getElementById('btn-decorate').classList.add('hidden');
-    document.getElementById('btn-light').classList.remove('hidden');
-}
+// ---------- FIXED AUDIO FUNCTION ----------
+function startMusic() {
+  if (!bgMusic) return;
 
-function lightCandle() {
-    document.getElementById('cake-image').src = 'cake_lit.png'; 
-    alert("🔥 Candle is lit! Make a wish! 🕯️");
-    document.getElementById('btn-light').classList.add('hidden');
-    document.getElementById('btn-next-cake').classList.remove('hidden');
-}
+  // Ensure file is ready
+  bgMusic.load();
+  bgMusic.volume = 1;
 
-function popBalloon(balloon) {
-    if (balloon.classList.contains('balloon-popped')) return;
-    balloon.classList.add('balloon-popped');
-    poppedBalloons++;
+  // Try playing immediately
+  const playPromise = bgMusic.play();
 
-    const word = balloon.getAttribute('data-word');
-    const messageDiv = document.getElementById('balloon-message');
-    messageDiv.innerHTML += `<span style="margin:0 5px;">${word}</span>`;
+  if (playPromise !== undefined) {
+    playPromise
+      .then(() => {
+        console.log("🎶 Music started successfully");
+      })
+      .catch((err) => {
+        console.warn("Autoplay blocked — waiting for user interaction...", err);
 
-    if (poppedBalloons === 4) {
-        setTimeout(() => {
-            document.getElementById('btn-next-balloons').classList.remove('hidden');
-        }, 1000);
-    }
-}
-
-function swipeCard() {
-    const cards = document.querySelectorAll('.photo-card');
-    const cardToMoveIndex = currentCardIndex % cards.length;
-    const cardToMove = cards[cardToMoveIndex];
-    cardToMove.style.transform = `translateX(-150%) rotate(-10deg)`;
-    cardToMove.style.opacity = 0;
-
-    setTimeout(() => {
-        cardToMove.style.transition = 'none'; 
-        cardToMove.style.transform = `translateY(10px) rotate(2deg)`;
-        cardToMove.style.zIndex = 1;
-        setTimeout(() => {
-            cardToMove.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
-            cardToMove.style.opacity = 1;
-        }, 50);
-    }, 500);
-
-    currentCardIndex++; 
-}
-
-function finalReveal() {
-    document.querySelector('.gift-reveal').classList.add('hidden');
-    document.getElementById('final-image').classList.remove('hidden');
-    setTimeout(() => {
-        document.getElementById('final-wish-text').classList.remove('hidden');
-    }, 1500);
-    alert("💖 FINAL SURPRISE REVEALED! Enjoy your special day! 💖");
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const ageMessage = document.getElementById('age-message');
-    if (ageMessage) {
-        ageMessage.innerHTML = `A Cutiepie was born today, <br>${birthdayAge} years ago!`;
-    }
-
-    const finalMessageText = document.getElementById('final-message-text');
-    const messageCard = document.querySelector('.message-card');
-    const tapOpen = document.querySelector('.tap-to-open');
-
-    messageCard.addEventListener('click', () => {
-        if (!finalMessageText.classList.contains('hidden')) return;
-        tapOpen.classList.add('hidden');
-        finalMessageText.classList.remove('hidden');
-
-        finalMessageText.textContent = `Happy Birthday, ${recipientName}! 🎉\n\nYou deserve all the happiness, love, and smiles in the world. Enjoy your special day! ❤️ There is few things to tell you, life la evlo mudiyumo avlo achieve pannu onakku oru support ah na eppayume iruppan.  Indha achievements la encourage panna ippo Amma namma kooda illaye nu nenaikkadha, life long na onakku oru amma va, appa va, friend ah, anna na koodave iruppan...`;
-        finalMessageText.style.maxHeight = "300px";
-        finalMessageText.style.overflowY = "auto";
-        finalMessageText.style.whiteSpace = "pre-line";
-        finalMessageText.style.paddingRight = "8px";
-    });
-
-    const bgMusic = document.getElementById('bg-music');
-    bgMusic.volume = 0.6;
-    bgMusic.play().catch(() => {
-        document.body.addEventListener('click', () => {
+        // If blocked, wait for next user click anywhere
+        document.body.addEventListener(
+          "click",
+          () => {
             bgMusic.play();
-        }, { once: true });
-    });
+          },
+          { once: true }
+        );
+      });
+  }
+}
 
-    goToScreen(screens[0]);
+// ---------- EVENTS ----------
+// START button: starts music and navigates to cake
+btnStart.addEventListener('click', () => {
+  startMusic();
+  showScreen('cake');
 });
 
+// Decorate cake
+btnDecorate.addEventListener('click', () => {
+  const cakeImg = document.getElementById('cake-image');
+  cakeImg.src = 'cake_decorated.png';
+  btnDecorate.classList.add('hidden');
+  btnLight.classList.remove('hidden');
+});
+
+// Light the candle
+btnLight.addEventListener('click', () => {
+  const cakeImg = document.getElementById('cake-image');
+  cakeImg.src = 'cake_lit.png';
+  btnLight.classList.add('hidden');
+  btnNextCake.classList.remove('hidden');
+});
+
+// Next after cake
+btnNextCake.addEventListener('click', () => showScreen('balloons'));
+
+// BALLOON logic
+balloons.forEach((btn, idx) => {
+  btn.addEventListener('click', () => {
+    if (btn.classList.contains('popped')) return;
+    btn.classList.add('popped');
+    // show corresponding word
+    const w = wordEls[idx];
+    if (w) w.classList.add('show');
+
+    poppedCount++;
+    if (poppedCount >= 4) {
+      setTimeout(() => btnNextBalloons.classList.remove('hidden'), 500);
+    }
+  });
+});
+
+// next from balloons to photos
+btnNextBalloons.addEventListener('click', () => showScreen('photos'));
+
+// PHOTO CAROUSEL: click to cycle top card
+document.getElementById('photo-carousel').addEventListener('click', () => {
+  if (photoCards.length === 0) return;
+  const top = photoCards.shift(); // remove first element
+  // animate it out
+  top.style.transition = 'transform .5s ease, opacity .5s ease';
+  top.style.transform = 'translateX(-150%) rotate(-10deg)';
+  top.style.opacity = '0';
+  // after animation, reset and push back
+  setTimeout(() => {
+    top.style.transition = 'none';
+    top.style.transform = '';
+    top.style.opacity = '1';
+    photoCards.push(top);
+    const container = document.getElementById('photo-carousel');
+    photoCards.forEach((card, i) => {
+      card.style.zIndex = String(photoCards.length - i);
+      container.appendChild(card);
+    });
+  }, 500);
+});
+
+// go to message
+btnToMessage.addEventListener('click', () => showScreen('message'));
+
+// message card open
+messageCard.addEventListener('click', () => {
+  if (!finalMessageText.classList.contains('hidden')) return;
+  tapOpen.classList.add('hidden');
+  finalMessageText.classList.remove('hidden');
+  finalMessageText.textContent = `Happy Birthday, ${recipientName}! 🎉\n\nYou deserve all the happiness, love, and smiles in the world. Enjoy your special day! ❤️ There is few things to tell you, life la evlo mudiyumo avlo achieve pannu onakku oru support ah na eppayume iruppan.  Indha achievements la encourage panna ippo Amma namma kooda illaye nu nenaikkadha, life long na onakku oru amma va, appa va, friend ah, anna na koodave iruppan...`;
+});
+
+// next to final
+btnToFinal.addEventListener('click', () => showScreen('final'));
+
+// gift reveal
+giftReveal.addEventListener('click', () => {
+  giftReveal.classList.add('hidden');
+  giftImageContainer.classList.remove('hidden');
+});
+
+// finally button
+btnFinally.addEventListener('click', () => {
+  giftImageContainer.classList.add('hidden');
+  finalWish.classList.remove('hidden');
+
+  // optional: fade out music smoothly
+  if (bgMusic) {
+    let vol = bgMusic.volume;
+    const fade = setInterval(() => {
+      vol -= 0.05;
+      if (vol <= 0) {
+        bgMusic.pause();
+        bgMusic.volume = 1;
+        clearInterval(fade);
+      } else {
+        bgMusic.volume = Math.max(0, vol);
+      }
+    }, 80);
+  }
+});
+
+// ---------- INIT ----------
+document.addEventListener('DOMContentLoaded', () => {
+  const ageMsg = document.getElementById('age-message');
+  if (ageMsg) ageMsg.innerHTML = `A Cutiepie was born today, <br>${birthdayAge} years ago!`;
+
+  // hide words initially
+  wordEls.forEach(w => w.classList.remove('show'));
+
+  // set initial photo stack
+  const container = document.getElementById('photo-carousel');
+  photoCards.forEach((card, i) => {
+    card.style.zIndex = String(photoCards.length - i);
+    container.appendChild(card);
+  });
+
+  // hide message text & final wish
+  finalMessageText.classList.add('hidden');
+  finalWish.classList.add('hidden');
+});
