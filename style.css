@@ -1,49 +1,111 @@
-:root { 
+:root{
   --neon-pink: #ff6f91;
   --neon-purple: #9c27b0;
   --dark-bg: #12011f;
+  --card-white: #ffffff;
 }
 
-body {
-  background: var(--dark-bg);
+/* Page basics */
+*{box-sizing: border-box;}
+html,body{height:100%;margin:0;font-family: system-ui,-apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+body{
+  background: linear-gradient(180deg,#12011f 0%, #0b0710 100%);
   color: #fff;
-  font-family: system-ui, sans-serif;
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
 }
 
-.app-container { width: 100%; max-width: 400px; height: 100vh; position: relative; }
+/* container */
+.app-container{ width:100%; max-width:420px; height:100vh; display:flex; align-items:center; justify-content:center;}
+.content-box{ width:100%; height:100%; position:relative; }
 
-.screen { position: absolute; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
-.hidden { opacity: 0; pointer-events: none; }
-.active { opacity: 1; pointer-events: auto; }
+/* common screen */
+.screen{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:20px; transition:opacity .35s ease, transform .35s ease; }
+.hidden{ opacity:0; pointer-events:none; transform: scale(.995); }
+.active{ opacity:1; pointer-events:auto; transform: none; }
 
-.neon-text { font-size: 2em; text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-purple); }
-.neon-button { background: var(--neon-pink); border: none; padding: 12px 25px; border-radius: 30px; color: var(--dark-bg); font-weight: bold; margin-top: 15px; cursor: pointer; }
-.neon-button:hover { background: #ff9a8d; transform: scale(1.05); }
+/* center blocks */
+.center{ display:flex; flex-direction:column; align-items:center; gap:12px; width:100%; }
+.center.vertical{ justify-content:center; }
 
-.balloon-container { display: flex; justify-content: space-around; width: 100%; margin-top: 20px; }
-.balloon {
-  width: 50px; height: 65px; border-radius: 50%;
-  background: var(--color); box-shadow: 0 0 10px var(--color);
-  position: relative; cursor: pointer;
+/* typography */
+.neon-text{ font-size:1.6rem; margin:0; text-align:center;
+  text-shadow: 0 0 6px var(--neon-pink), 0 0 14px var(--neon-purple);
 }
-.balloon::before { content: ''; position: absolute; top: 100%; left: 50%; width: 1px; height: 80px; background: #fff; }
-.balloon-popped { opacity: 0; transform: scale(0.1); transition: 0.3s; }
+.subtitle{ margin:0 0 6px 0; color:#ffdfe9; }
+.small{ color:#ffdfe9; font-size:.9rem; margin:0; }
 
-.msg-piece { font-size: 1.6em; margin: 5px; opacity: 0; transition: 0.5s; }
-.msg-piece.show { opacity: 1; }
+/* icon */
+.cute-icon{ font-size:3.6rem; }
 
-.photo-carousel { position: relative; width: 250px; height: 350px; margin: 25px auto; cursor: pointer; }
-.photo-card { position: absolute; width: 100%; height: 100%; border-radius: 15px; background-size: cover; background-position: center; border: 2px solid #fff; }
+/* responsive image */
+.responsive-img{ max-width:90%; height:auto; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,.6); }
 
-.surprise-image { max-width: 90%; border-radius: 15px; margin: 20px 0; box-shadow: 0 0 15px var(--neon-pink); }
+/* buttons */
+.controls{ margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+.neon-button{
+  background: var(--neon-pink);
+  color: var(--dark-bg);
+  border:none;
+  padding:10px 16px;
+  border-radius:30px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow: 0 6px 18px rgba(255,111,145,0.2);
+}
+.neon-button:active{ transform: translateY(1px); }
+.neon-button.hidden{ display:none; }
 
-.final-love { color: var(--neon-pink); font-size: 1.3em; margin-top: 15px; }
+/* balloons */
+.balloon-container{ width:100%; display:flex; justify-content:space-around; gap:10px; margin-top:6px; }
+.balloon{
+  width:56px; height:72px; border-radius:50%; border:none;
+  background: var(--color, #eee);
+  position:relative; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.4);
+  transition: transform .25s ease, opacity .25s ease;
+}
+.balloon::after{ content:""; position:absolute; left:50%; top:100%; height:72px; width:2px; background:rgba(255,255,255,0.2); transform:translateX(-50%); }
+.balloon.popped{ opacity:0; transform:scale(.1) translateY(-10px); pointer-events:none; }
+
+/* balloon words */
+.message-row{ display:flex; gap:10px; margin-top:14px; min-height:36px; justify-content:center; align-items:center; }
+.msg-piece{ font-size:1.4rem; color:var(--neon-pink); opacity:0; transform: translateY(6px); transition:opacity .33s ease, transform .33s ease; }
+.msg-piece.show{ opacity:1; transform: translateY(0); }
+
+/* photo carousel */
+.photo-carousel{ width:260px; height:360px; position:relative; margin-top:12px; }
+.photo-card{
+  position:absolute; inset:0; border-radius:14px; background-size:cover; background-position:center;
+  border:4px solid rgba(255,255,255,0.9);
+  box-shadow:0 18px 40px rgba(0,0,0,0.6);
+  transition: transform .5s ease, opacity .5s ease;
+}
+/* initial stacked transforms (JS will set z-index) */
+.photo-card:nth-child(1){ transform:translateY(0) rotate(2deg); }
+.photo-card:nth-child(2){ transform:translateY(6px) rotate(-3deg); }
+.photo-card:nth-child(3){ transform:translateY(12px) rotate(1deg); }
+.photo-card:nth-child(4){ transform:translateY(18px) rotate(-2deg); }
+.photo-card:nth-child(5){ transform:translateY(24px) rotate(3deg); }
+
+/* message card */
+.message-card{ width:100%; max-width:360px; background:#fff; color:var(--dark-bg); padding:20px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.4); cursor:pointer; }
+.tap-to-open{ margin:0; font-style:italic; color:#666; }
+.final-text{ text-align:left; white-space:pre-wrap; }
+
+/* gift & popup */
+.gift-reveal{ display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; }
+.gift-img{ width:140px; max-width:80%; height:auto; border-radius:10px; box-shadow:0 12px 30px rgba(0,0,0,.5); }
+.gift-popup{ margin-top:12px; display:flex; flex-direction:column; align-items:center; gap:10px; }
+.surprise-image{ width:90%; max-width:320px; border-radius:12px; box-shadow:0 14px 36px rgba(0,0,0,.6); }
+
+/* final wish */
+.final-love{ color:var(--neon-pink); font-size:1.2rem; margin-top:12px; }
+
+/* utility */
+.hidden{ display:block; } /* overwritten for repositioning; JS toggles classes .hidden/.active for screens, and .popped/.show for elements */
+
 
 
 
