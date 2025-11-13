@@ -1,111 +1,192 @@
-:root{
-  --neon-pink: #ff6f91;
-  --neon-purple: #9c27b0;
-  --dark-bg: #12011f;
-  --card-white: #ffffff;
+:root {
+    --neon-pink: #ff6f91;
+    --neon-purple: #9c27b0;
+    --dark-bg: #12011f;
 }
 
-/* Page basics */
-*{box-sizing: border-box;}
-html,body{height:100%;margin:0;font-family: system-ui,-apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
-body{
-  background: linear-gradient(180deg,#12011f 0%, #0b0710 100%);
-  color: #fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:16px;
+body {
+    background-color: var(--dark-bg);
+    color: #fce4ec;
+    font-family: 'system-ui', sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
-/* container */
-.app-container{ width:100%; max-width:420px; height:100vh; display:flex; align-items:center; justify-content:center;}
-.content-box{ width:100%; height:100%; position:relative; }
-
-/* common screen */
-.screen{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:20px; transition:opacity .35s ease, transform .35s ease; }
-.hidden{ opacity:0; pointer-events:none; transform: scale(.995); }
-.active{ opacity:1; pointer-events:auto; transform: none; }
-
-/* center blocks */
-.center{ display:flex; flex-direction:column; align-items:center; gap:12px; width:100%; }
-.center.vertical{ justify-content:center; }
-
-/* typography */
-.neon-text{ font-size:1.6rem; margin:0; text-align:center;
-  text-shadow: 0 0 6px var(--neon-pink), 0 0 14px var(--neon-purple);
+.app-container {
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    position: relative;
 }
-.subtitle{ margin:0 0 6px 0; color:#ffdfe9; }
-.small{ color:#ffdfe9; font-size:.9rem; margin:0; }
 
-/* icon */
-.cute-icon{ font-size:3.6rem; }
-
-/* responsive image */
-.responsive-img{ max-width:90%; height:auto; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,.6); }
-
-/* buttons */
-.controls{ margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
-.neon-button{
-  background: var(--neon-pink);
-  color: var(--dark-bg);
-  border:none;
-  padding:10px 16px;
-  border-radius:30px;
-  font-weight:700;
-  cursor:pointer;
-  box-shadow: 0 6px 18px rgba(255,111,145,0.2);
+.screen {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    transition: opacity 0.5s ease-in-out;
 }
-.neon-button:active{ transform: translateY(1px); }
-.neon-button.hidden{ display:none; }
 
-/* balloons */
-.balloon-container{ width:100%; display:flex; justify-content:space-around; gap:10px; margin-top:6px; }
-.balloon{
-  width:56px; height:72px; border-radius:50%; border:none;
-  background: var(--color, #eee);
-  position:relative; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.4);
-  transition: transform .25s ease, opacity .25s ease;
+.hidden {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
 }
-.balloon::after{ content:""; position:absolute; left:50%; top:100%; height:72px; width:2px; background:rgba(255,255,255,0.2); transform:translateX(-50%); }
-.balloon.popped{ opacity:0; transform:scale(.1) translateY(-10px); pointer-events:none; }
 
-/* balloon words */
-.message-row{ display:flex; gap:10px; margin-top:14px; min-height:36px; justify-content:center; align-items:center; }
-.msg-piece{ font-size:1.4rem; color:var(--neon-pink); opacity:0; transform: translateY(6px); transition:opacity .33s ease, transform .33s ease; }
-.msg-piece.show{ opacity:1; transform: translateY(0); }
-
-/* photo carousel */
-.photo-carousel{ width:260px; height:360px; position:relative; margin-top:12px; }
-.photo-card{
-  position:absolute; inset:0; border-radius:14px; background-size:cover; background-position:center;
-  border:4px solid rgba(255,255,255,0.9);
-  box-shadow:0 18px 40px rgba(0,0,0,0.6);
-  transition: transform .5s ease, opacity .5s ease;
+.active {
+    opacity: 1;
+    pointer-events: auto;
 }
-/* initial stacked transforms (JS will set z-index) */
-.photo-card:nth-child(1){ transform:translateY(0) rotate(2deg); }
-.photo-card:nth-child(2){ transform:translateY(6px) rotate(-3deg); }
-.photo-card:nth-child(3){ transform:translateY(12px) rotate(1deg); }
-.photo-card:nth-child(4){ transform:translateY(18px) rotate(-2deg); }
-.photo-card:nth-child(5){ transform:translateY(24px) rotate(3deg); }
 
-/* message card */
-.message-card{ width:100%; max-width:360px; background:#fff; color:var(--dark-bg); padding:20px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.4); cursor:pointer; }
-.tap-to-open{ margin:0; font-style:italic; color:#666; }
-.final-text{ text-align:left; white-space:pre-wrap; }
+.neon-text {
+    font-size: 2em;
+    color: #fff;
+    text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink), 0 0 15px var(--neon-purple);
+    margin-bottom: 20px;
+    animation: glow-pulse 2s infinite alternate;
+}
 
-/* gift & popup */
-.gift-reveal{ display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; }
-.gift-img{ width:140px; max-width:80%; height:auto; border-radius:10px; box-shadow:0 12px 30px rgba(0,0,0,.5); }
-.gift-popup{ margin-top:12px; display:flex; flex-direction:column; align-items:center; gap:10px; }
-.surprise-image{ width:90%; max-width:320px; border-radius:12px; box-shadow:0 14px 36px rgba(0,0,0,.6); }
+@keyframes glow-pulse {
+    from { text-shadow: 0 0 5px var(--neon-pink); }
+    to { text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-purple); }
+}
 
-/* final wish */
-.final-love{ color:var(--neon-pink); font-size:1.2rem; margin-top:12px; }
+.neon-button {
+    background-color: var(--neon-pink);
+    color: var(--dark-bg);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 50px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(255, 111, 145, 0.7);
+    transition: transform 0.2s, background-color 0.2s;
+}
 
-/* utility */
-.hidden{ display:block; } /* overwritten for repositioning; JS toggles classes .hidden/.active for screens, and .popped/.show for elements */
+.neon-button:hover {
+    background-color: #ff9a8d;
+    transform: scale(1.05);
+}
 
+.cute-icon {
+    font-size: 5rem;
+    margin-bottom: 10px;
+}
+
+#cake-image, .gift-reveal img {
+    max-width: 90%;
+    height: auto;
+    max-height: 40vh;
+    margin: 10px auto;
+}
+
+.balloon-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin: 30px 0;
+}
+.balloon {
+    width: 50px;
+    height: 65px;
+    background-color: var(--color);
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 0 10px var(--color);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.balloon::before { 
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 1px;
+    height: 100px;
+    background-color: #fff;
+}
+.balloon-popped {
+    opacity: 0;
+    transform: scale(0.1);
+}
+
+#balloon-message {
+    margin-top: 30px;
+    height: 50px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--neon-pink);
+}
+
+.photo-carousel {
+    position: relative;
+    width: 250px;
+    height: 350px;
+    margin: 30px auto;
+    cursor: pointer;
+}
+.photo-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    background-size: cover;
+    background-position: center;
+    border: 3px solid white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    transform-origin: bottom center;
+}
+
+.message-card {
+    background-color: #fff;
+    color: var(--dark-bg);
+    padding: 30px;
+    border-radius: 15px;
+    margin: 20px 0;
+    min-height: 200px;
+    box-shadow: 0 0 15px var(--neon-purple);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.message-card:active {
+    transform: scale(0.98);
+}
+.tap-to-open {
+    font-style: italic;
+    color: #666;
+}
+.final-text {
+    text-align: left;
+    white-space: pre-wrap;
+}
+
+/* scroll styling for long message */
+#final-message-text {
+    max-height: 300px;
+    overflow-y: auto;
+}
+#final-message-text::-webkit-scrollbar {
+    width: 6px;
+}
+#final-message-text::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 3px;
+}
 
 
 
